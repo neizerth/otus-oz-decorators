@@ -1,0 +1,30 @@
+{
+  "name": "otus-oz-decorators",
+  "version": "1.0.0",
+  "description": "Примеры использования декораторов в TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "dev:simple": "ts-node-dev --respawn --transpile-only examples/simple/index.ts",
+    "dev:tsed": "ts-node-dev --respawn --transpile-only examples/tsed/index.ts",
+    "compile:example": "tsc examples/simple/04-compiled-decorator.ts"
+  },
+  "keywords": [
+    "typescript",
+    "decorators",
+    "nestjs",
+    "tsed"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@tsed/core": "^7.0.0",
+    "@tsed/di": "^7.0.0",
+    "@tsed/platform-express": "^7.0.0",
+    "reflect-metadata": "^0.1.13"
+  }
+}
