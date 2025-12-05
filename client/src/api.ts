@@ -19,6 +19,12 @@ export interface MenuSet {
   dishes?: Dish[];
 }
 
+export interface TableOrder {
+  id: number;
+  orderTime: string;
+  dishes: Dish[];
+}
+
 export interface Order {
   id: number;
   orderTime: string;
@@ -28,6 +34,7 @@ export interface Order {
   table?: Table;
   dishes?: Dish[];
   lastTableOrderTime?: string | null;
+  tableOrders?: TableOrder[];
 }
 
 export const api = {

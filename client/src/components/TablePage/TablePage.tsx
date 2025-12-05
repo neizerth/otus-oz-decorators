@@ -91,30 +91,32 @@ export function TablePage() {
       )}
 
       {activeOrder &&
-        activeOrder.dishes &&
-        activeOrder.dishes.length > 0 && (
+        activeOrder.tableOrders &&
+        activeOrder.tableOrders.length > 0 && (
           <C.HistorySection>
             <C.HistoryTitle>Заказанные блюда</C.HistoryTitle>
             <C.HistoryList>
-              <C.HistoryItem>
-                <C.HistoryItemHeader>
-                  <C.HistoryItemDate>
-                    {new Date(activeOrder.orderTime).toLocaleString('ru-RU', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </C.HistoryItemDate>
-                  <C.HistoryItemMenuSet>
-                    {activeOrder.menuSet?.name || 'Неизвестный набор'}
-                  </C.HistoryItemMenuSet>
-                </C.HistoryItemHeader>
-                <C.HistoryItemDishes>
-                  {activeOrder.dishes.map((dish) => dish.name).join(', ')}
-                </C.HistoryItemDishes>
-              </C.HistoryItem>
+              {activeOrder.tableOrders.map((tableOrder) => (
+                <C.HistoryItem key={tableOrder.id}>
+                  <C.HistoryItemHeader>
+                    <C.HistoryItemDate>
+                      {new Date(tableOrder.orderTime).toLocaleString('ru-RU', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </C.HistoryItemDate>
+                    <C.HistoryItemMenuSet>
+                      {activeOrder.menuSet?.name || 'Неизвестный набор'}
+                    </C.HistoryItemMenuSet>
+                  </C.HistoryItemHeader>
+                  <C.HistoryItemDishes>
+                    {tableOrder.dishes.map((dish) => dish.name).join(', ')}
+                  </C.HistoryItemDishes>
+                </C.HistoryItem>
+              ))}
             </C.HistoryList>
           </C.HistorySection>
         )}

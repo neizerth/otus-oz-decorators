@@ -6,6 +6,7 @@
   "scripts": {
     "dev:simple": "ts-node-dev --respawn --transpile-only examples/simple/index.ts",
     "dev:tsed": "ts-node-dev --respawn --transpile-only examples/tsed/index.ts",
+    "dev:ioc": "ts-node-dev --respawn --transpile-only examples/ioc/index.ts",
     "compile:example": "tsc examples/simple/04-compiled-decorator.ts"
   },
   "keywords": [

@@ -79,6 +79,11 @@ export class OrderService {
       ...order,
       dishes: allDishes,
       lastTableOrderTime,
+      tableOrders: tableOrders.map((to) => ({
+        id: to.id,
+        orderTime: to.orderTime,
+        dishes: to.dishes || [],
+      })),
     };
   }
 
