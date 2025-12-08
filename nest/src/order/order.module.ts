@@ -8,6 +8,9 @@ import {
 } from '../entities';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
+import { MenuSetTimeGuard } from './guards/menu-set-time.guard';
+import { TableFreeGuard } from './guards/table-free.guard';
+import { MenuSetModule } from '../menu-set/menu-set.module';
 
 @Module({
   imports: [
@@ -17,9 +20,10 @@ import { OrderService } from './order.service';
       Dish,
       TableOrder,
     ]),
+    MenuSetModule,
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService, MenuSetTimeGuard, TableFreeGuard],
   exports: [OrderService],
 })
 export class OrderModule {}

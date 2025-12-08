@@ -4,14 +4,22 @@ import {
   Get,
   Param,
   Post,
+  UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
+import { CreateOrderDto } from '../common/dto/create-order.dto';
+import { OrderDishDto } from '../common/dto/order-dish.dto';
+import { CreateOrderValidationPipe } from './pipes/create-order-validation.pipe';
+import { OrderDishValidationPipe } from './pipes/order-dish-validation.pipe';
+import { TableNumberValidationPipe } from './pipes/table-number-validation.pipe';
+import { TableFreeGuard } from './guards/table-free.guard';
+import { RateLimitGuard } from '../common/guards/rate-limit.guard';
 
 @Controller('api/orders')
+@UseGuards(RateLimitGuard) // Rate limiting для всех эндпоинтов
 export class OrderController {
-  constructor(
-    private orderService: OrderService,
-  ) {}
+  constructor(private orderService: OrderService) {}
 
   @Get()
   getOrders() {
@@ -19,14 +27,9 @@ export class OrderController {
   }
 
   @Post()
-  createOrder(
-    @Body() body: {
-      tableId: number;
-      menuSetId: number;
-      duration: number;
-      persons: number;
-    },
-  ) {
+  @UseGuards(TableFreeGuard) // Проверка свободности столика
+  @UsePipes(new CreateOrderValidationPipe())
+  createOrder(@Body() body: CreateOrderDto) {
     return this.orderService.create(
       body.tableId,
       body.menuSetId,
@@ -37,12 +40,11 @@ export class OrderController {
 
   @Get('tables/:tableNumber/active')
   async getActiveOrder(
-    @Param('tableNumber') tableNumber: number,
+    @Param('tableNumber', TableNumberValidationPipe) tableNumber: number,
   ) {
-    const order =
-      await this.orderService.getActiveOrderByTableNumber(
-        tableNumber,
-      );
+    const order = await this.orderService.getActiveOrderByTableNumber(
+      tableNumber,
+    );
     if (!order) {
       return null;
     }
@@ -51,12 +53,9 @@ export class OrderController {
 
   @Post('tables/:tableNumber/order-dish')
   orderDish(
-    @Param('tableNumber') tableNumber: number,
-    @Body() body: { dishId: number },
+    @Param('tableNumber', TableNumberValidationPipe) tableNumber: number,
+    @Body(new OrderDishValidationPipe()) body: OrderDishDto,
   ) {
-    return this.orderService.orderDish(
-      tableNumber,
-      body.dishId,
-    );
+    return this.orderService.orderDish(tableNumber, body.dishId);
   }
 }
