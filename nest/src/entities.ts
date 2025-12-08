@@ -46,8 +46,22 @@ export class MenuSet {
   @Column('datetime')
   endTime: Date;
 
+  /**
+   * Явно фиксируем имя таблицы связей, чтобы не потерять существующие связи
+   * после переименования сущности с "menu" на "dish".
+   */
   @ManyToMany(() => Dish)
-  @JoinTable()
+  @JoinTable({
+    name: 'menu_sets_dishes_menu',
+    joinColumn: {
+      name: 'menuSetId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'menuId',
+      referencedColumnName: 'id',
+    },
+  })
   dishes: Dish[];
 }
 

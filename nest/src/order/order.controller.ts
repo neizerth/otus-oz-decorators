@@ -43,8 +43,8 @@ export class OrderController {
     @Param('tableNumber', TableNumberValidationPipe) tableNumber: number,
   ) {
     const order = await this.orderService.getActiveOrderByTableNumber(
-      tableNumber,
-    );
+        tableNumber,
+      );
     if (!order) {
       return null;
     }

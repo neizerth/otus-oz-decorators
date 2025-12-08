@@ -66,10 +66,10 @@ export class OrderService {
     }
 
     const tableOrders = await this.tableOrderRepo.find({
-      where: { order: { id: order.id } },
-      relations: ['dishes'],
-      order: { orderTime: 'DESC' },
-    });
+        where: { order: { id: order.id } },
+        relations: ['dishes'],
+        order: { orderTime: 'DESC' },
+      });
 
     const allDishes = tableOrders.flatMap((to) => to.dishes || []);
     const lastTableOrderTime =
@@ -113,10 +113,10 @@ export class OrderService {
 
     // Получаем все TableOrder за последние 5 минут для данного Order
     const recentTableOrders = await this.tableOrderRepo.find({
-      where: { order: { id: order.id } },
-      relations: ['dishes'],
-      order: { orderTime: 'DESC' },
-    });
+        where: { order: { id: order.id } },
+        relations: ['dishes'],
+        order: { orderTime: 'DESC' },
+      });
 
     // Фильтруем только те, что были созданы за последние 5 минут
     const recentTableOrdersInWindow = recentTableOrders.filter(
@@ -130,12 +130,12 @@ export class OrderService {
     );
 
     if (totalDishesCount >= limit) {
-      throw new BadRequestException(
+        throw new BadRequestException(
         `Максимум блюд за заказ: ${limit} (на ${persons} ${
           persons === 1 ? 'персону' : 'персон'
         })`,
-      );
-    }
+        );
+      }
 
     // Если есть последний TableOrder в окне 5 минут, добавляем блюдо к нему
     const lastTableOrder = recentTableOrdersInWindow[0];
@@ -147,9 +147,9 @@ export class OrderService {
 
     // Иначе создаем новый TableOrder
     const newTableOrder = await this.tableOrderRepo.save({
-      order: { id: order.id },
-      dishes: [dish],
-    });
+        order: { id: order.id },
+        dishes: [dish],
+      });
 
     return newTableOrder;
   }
