@@ -1,7 +1,6 @@
 /**
  * Пример 10: Блюдо в японском ресторане
  */
-import "reflect-metadata";
 
 function ValidatePrice(target: any, propertyKey: string) {
   let value: number;

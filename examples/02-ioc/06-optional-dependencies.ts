@@ -1,13 +1,20 @@
 /**
- * Пример 1: Простая реализация IoC контейнера с @Injectable
+ * Пример 6: Опциональные зависимости
  */
 
 import 'reflect-metadata';
 
 function Injectable() {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
-    Reflect.defineMetadata('injectable', true, constructor);
     return constructor;
+  };
+}
+
+function Optional() {
+  return function (target: any, _: any, index: number) {
+    const optionals = Reflect.getMetadata('optional:params', target) || [];
+    optionals[index] = true;
+    Reflect.defineMetadata('optional:params', optionals, target);
   };
 }
 
@@ -20,13 +27,17 @@ class Container {
   }
 
   get<T>(token: any): T {
-    if (this.instances.has(token)) return this.instances.get(token);
+    if (this.instances.has(token)) return this.instances.get(token) as T;
     const Provider = this.providers.get(token);
     const paramTypes = Reflect.getMetadata('design:paramtypes', Provider) || [];
-    const deps = paramTypes.map((t: any) => this.get(t));
+    const optionals = Reflect.getMetadata('optional:params', Provider) || [];
+    const deps = paramTypes.map((t: any, i: number) => {
+      if (optionals[i] && !this.providers.has(t)) return null;
+      return this.get(t);
+    });
     const instance = new Provider(...deps);
     this.instances.set(token, instance);
-    return instance;
+    return instance as T;
   }
 }
 
@@ -39,10 +50,14 @@ class LoggerService {
 
 @Injectable()
 class UserService {
-  constructor(private logger: LoggerService) {}
+  constructor(
+    private logger: LoggerService,
+    @Optional() private cache?: any,
+  ) {}
+
   getUser(id: number) {
     this.logger.log(`Getting user ${id}`);
-    return { id, name: 'John' };
+    return this.cache ? `cached-${id}` : { id, name: 'User' };
   }
 }
 

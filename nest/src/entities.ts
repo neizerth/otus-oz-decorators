@@ -20,7 +20,7 @@ export class Table {
   activeOrderId: number | null;
 }
 
-@Entity('menu')
+@Entity('dish')
 export class Dish {
   @PrimaryGeneratedColumn()
   id: number;

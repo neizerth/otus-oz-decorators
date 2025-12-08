@@ -6,9 +6,7 @@
  *
  * В TypeScript декораторы начинаются с символа @
  *
- * reflect-metadata нужен для работы с метаданными декораторов
  */
-import "reflect-metadata";
 
 // Простой декоратор функции
 function simpleDecorator(

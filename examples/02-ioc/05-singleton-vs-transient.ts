@@ -1,5 +1,5 @@
 /**
- * Пример 3: Singleton vs Transient зависимости
+ * Пример 5: Singleton vs Transient зависимости
  */
 
 import 'reflect-metadata';

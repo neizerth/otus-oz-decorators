@@ -1,5 +1,5 @@
 /**
- * Пример 2: IoC с библиотекой InversifyJS
+ * Пример 4: IoC с библиотекой InversifyJS
  */
 
 import 'reflect-metadata';
